@@ -1,0 +1,5 @@
+{
+  "name": "00981 Holdings Tracker",
+  "description": "A professional tool for monitoring daily holding changes of the 00981 ETF, featuring AI-powered data parsing, trend visualization, and detailed change analysis (New, Increase, Decrease).",
+  "requestFramePermissions": []
+}
