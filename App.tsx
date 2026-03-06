@@ -52,7 +52,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <Layout activeTab={activeTab} setActiveTab={setActiveTab}>
+    <Layout activeTab={activeTab} setActiveTab={setActiveTab} lastUpdateDate={history[0]?.date}>
       {renderContent()}
     </Layout>
   );

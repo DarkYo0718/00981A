@@ -6,9 +6,10 @@ interface LayoutProps {
   activeTab: AppTab;
   setActiveTab: (tab: AppTab) => void;
   children: React.ReactNode;
+  lastUpdateDate?: string;
 }
 
-const Layout: React.FC<LayoutProps> = ({ activeTab, setActiveTab, children }) => {
+const Layout: React.FC<LayoutProps> = ({ activeTab, setActiveTab, children, lastUpdateDate }) => {
   const navItems = [
     { id: AppTab.DASHBOARD, icon: 'fa-chart-line', label: '儀表板' },
     { id: AppTab.HISTORY, icon: 'fa-history', label: '持股歷史' },
@@ -50,7 +51,7 @@ const Layout: React.FC<LayoutProps> = ({ activeTab, setActiveTab, children }) =>
         <div className="p-4 mt-auto">
           <div className="bg-slate-800 rounded-xl p-4 text-xs text-slate-400">
             <p>最後更新數據:</p>
-            <p className="text-white mt-1 font-mono">2025-02-14</p>
+            <p className="text-white mt-1 font-mono">{lastUpdateDate || '尚無數據'}</p>
           </div>
         </div>
       </aside>
