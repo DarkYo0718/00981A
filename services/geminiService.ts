@@ -2,13 +2,24 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { Holding } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+let ai: GoogleGenAI | null = null;
+
+const getAI = (): GoogleGenAI => {
+  if (!ai) {
+    const apiKey = process.env.API_KEY || process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      throw new Error('請先在 .env.local 中設定 GEMINI_API_KEY');
+    }
+    ai = new GoogleGenAI({ apiKey });
+  }
+  return ai;
+};
 
 /**
  * Manually parse raw text provided by the user.
  */
 export const parseRawHoldings = async (rawText: string, date: string): Promise<Holding[]> => {
-  const response = await ai.models.generateContent({
+  const response = await getAI().models.generateContent({
     model: "gemini-3-flash-preview",
     contents: `Analyze the following raw text which contains ETF holdings data for date ${date}. 
     Extract the stock symbol (or ticker), company name, total shares held, and the percentage weight.
@@ -48,7 +59,7 @@ export const parseRawHoldings = async (rawText: string, date: string): Promise<H
  * Automatically fetch the latest holdings using Google Search Grounding.
  */
 export const autoFetchHoldings = async (): Promise<{ holdings: Holding[], date: string, sourceUrl: string }> => {
-  const response = await ai.models.generateContent({
+  const response = await getAI().models.generateContent({
     model: "gemini-3-flash-preview",
     contents: "請從統一投信官網找到 00981 (統一全球半導體 ETF) 的最新每日持股清單。你需要提供最新的數據日期、所有持股的代號、公司名稱、持有股數以及權重百分比。",
     config: {
